@@ -10,6 +10,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/71pRLsEhOUL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Health Monitoring', 'Fitness Tracking', 'Notifications'],
+      priority: 'Health Sensors',
+      compatibility: 'iPhone',
+    },
     specs: {
       display: '1.9" Always-On Retina LTPO OLED',
       battery: '18 hours',
@@ -29,6 +34,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/71KFqJt+lJL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Health Monitoring', 'Fitness Tracking'],
+      priority: 'Health Sensors',
+      compatibility: 'Android',
+    },
     specs: {
       display: '1.5" Super AMOLED',
       battery: '40 hours',
@@ -48,6 +58,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/51DWVczFeSL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Fitness Tracking'],
+      priority: 'GPS & Sports',
+      compatibility: 'Any',
+    },
     specs: {
       display: '1.3" MIP Display',
       battery: '14 days',
@@ -67,6 +82,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/61IovqcltnL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Fitness Tracking', 'Notifications', 'Style'],
+      priority: 'Battery Life',
+      compatibility: 'Any',
+    },
     specs: {
       display: '1.85" AMOLED',
       battery: '7 days',
@@ -87,6 +107,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/71NS2RsGFFL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Photography', 'Business', 'Everyday Use'],
+      priority: 'Performance',
+      storage: '256GB',
+    },
     specs: {
       processor: 'Snapdragon 8 Gen 3',
       ram: '8GB',
@@ -107,6 +132,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/61xqpIioJeL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Gaming', 'Everyday Use'],
+      priority: 'Performance',
+      storage: '256GB',
+    },
     specs: {
       processor: 'Snapdragon 8 Gen 2',
       ram: '16GB',
@@ -127,6 +157,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/61Wfb8QFQKL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Gaming', 'Everyday Use'],
+      priority: 'Performance',
+      storage: '256GB',
+    },
     specs: {
       processor: 'Dimensity 8300-Ultra',
       ram: '12GB',
@@ -147,6 +182,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/61y8lf9VMTL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Photography', 'Everyday Use'],
+      priority: 'Camera',
+      storage: '256GB',
+    },
     specs: {
       processor: 'Dimensity 7200-Ultra',
       ram: '8GB',
@@ -168,6 +208,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/81eDVLJGZGL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Gaming'],
+      priority: 'Maximum Performance',
+      battery: 'Not Important',
+    },
     specs: {
       processor: 'AMD Ryzen 7 6800H',
       ram: '16GB DDR5',
@@ -189,6 +234,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/71dXKEHRFQL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Video Editing & Design', 'Office & Work'],
+      priority: 'Balanced',
+      battery: 'Somewhat',
+    },
     specs: {
       processor: 'Intel Core i7-13700H',
       ram: '16GB DDR5',
@@ -210,6 +260,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/71UiST5VAQL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['College & Study', 'Office & Work'],
+      priority: 'Balanced',
+      battery: 'Very Important',
+    },
     specs: {
       processor: 'Intel Core i5-1235U',
       ram: '8GB DDR4',
@@ -231,6 +286,11 @@ export const MOCK_PRODUCTS = [
     image_url: 'https://m.media-amazon.com/images/I/61p3vHtGYuL._SX522_.jpg',
     affiliate_link: 'https://amazon.in',
     is_active: true,
+    tags: {
+      use_case: ['Office & Work', 'College & Study'],
+      priority: 'Lightweight & Portable',
+      battery: 'Somewhat',
+    },
     specs: {
       processor: 'Intel Core i5-1335U',
       ram: '16GB DDR4',

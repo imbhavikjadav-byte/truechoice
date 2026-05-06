@@ -33,17 +33,19 @@ export default async function handler(req, res) {
 
     const { category } = updateData
     if (category) {
-      try {
+      const invalidate = async () => {
         const pattern = `rec:${category}:*`
         let cursor = 0
         do {
           const result = await redis.scan(cursor, { match: pattern, count: 100 })
           cursor = result[0]
           const keys = result[1]
-          if (keys.length > 0) {
-            await redis.del(...keys)
-          }
+          if (keys.length > 0) await redis.del(...keys)
         } while (cursor !== 0)
+      }
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
+      try {
+        await Promise.race([invalidate(), timeout])
       } catch (cacheError) {
         console.error('Cache invalidation failed:', cacheError)
       }

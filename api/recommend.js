@@ -59,14 +59,21 @@ async function callClaudeAPI(systemPrompt, userPrompt) {
   return data.content[0].text
 }
 
-// Format products for Claude
+// Format products for Claude — includes tags so it can match all 5 questionnaire answers
 function formatProductsForClaude(products) {
-  return products
-    .map(
-      p =>
-        `ID:${p.id} | ${p.name} | ₹${p.price} | ${p.brand} | ${p.category} | Rating: ${p.amazon_rating || 'N/A'}`
-    )
-    .join('\n')
+  return products.map(p => {
+    const tags = p.tags || {}
+    const parts = [`ID:${p.id}`, p.name, `₹${p.price}`, `Brand: ${p.brand}`]
+    if (tags.use_case?.length) {
+      const useCases = Array.isArray(tags.use_case) ? tags.use_case.join(', ') : tags.use_case
+      parts.push(`Best for: ${useCases}`)
+    }
+    Object.entries(tags).forEach(([k, v]) => {
+      if (k !== 'use_case' && v) parts.push(`${k}: ${v}`)
+    })
+    parts.push(`Rating: ${p.amazon_rating || 'N/A'}`)
+    return parts.join(' | ')
+  }).join('\n')
 }
 
 // Main handler
@@ -126,14 +133,14 @@ export default async function handler(req, res) {
     }
 
     // Build Claude prompt
-    const systemPrompt = `You are a product recommendation engine. You will receive a user's requirements and a list of products. Your job is to select the 3 best matching products and explain why each is a good fit. Always respond in valid JSON only. No preamble, no explanation outside the JSON.`
+    const systemPrompt = `You are a product recommendation engine for an Indian e-commerce affiliate site. You receive a user's requirements and a list of products. Each product has tags (Best for, priority, battery, storage, compatibility, etc.) that directly mirror the questionnaire answer values. Use these tags plus price to match products to the user's answers. Select the top 3 best matching products and explain why each fits. Always respond in valid JSON only. No preamble, no explanation outside the JSON.`
+
+    const answerLines = Object.entries(answers)
+      .map(([k, v]) => `- ${k.replace(/_/g, ' ')}: ${v}`)
+      .join('\n')
 
     const userPrompt = `User needs a ${category} with these requirements:
-- Use case: ${answers.use_case}
-- Budget: ₹${answers.budget}
-- Priority: ${answers.priority}
-- Brand preference: ${answers.brand}
-- Battery importance: ${answers.battery}
+${answerLines}
 
 Available products:
 ${formatProductsForClaude(products)}
@@ -149,7 +156,7 @@ Return exactly this JSON structure:
   ]
 }
 
-Only pick from the provided product list.`
+Match products against ALL the user requirements. Use the product tags to find the best fit. Only use product IDs from the list above. Pick top 3.`
 
     // Call Claude
     const claudeResponse = await callClaudeAPI(systemPrompt, userPrompt)

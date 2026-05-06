@@ -36,6 +36,79 @@ const SPEC_FIELDS = {
   other: [],
 }
 
+const TAG_FIELDS = {
+  laptop: [
+    {
+      key: 'use_case',
+      label: 'Best For (Use Cases)',
+      hint: 'Select all that apply — maps to Q1 of the questionnaire',
+      type: 'multiselect',
+      options: ['College & Study', 'Office & Work', 'Gaming', 'Video Editing & Design'],
+    },
+    {
+      key: 'priority',
+      label: 'Priority Strength',
+      hint: 'What does this laptop do best — maps to Q3',
+      type: 'select',
+      options: ['Lightweight & Portable', 'Balanced', 'Maximum Performance'],
+    },
+    {
+      key: 'battery',
+      label: 'Battery Life Category',
+      hint: 'How good is the battery — maps to Q5',
+      type: 'select',
+      options: ['Very Important', 'Somewhat', 'Not Important'],
+    },
+  ],
+  mobile: [
+    {
+      key: 'use_case',
+      label: 'Best For (Use Cases)',
+      hint: 'Select all that apply — maps to Q1 of the questionnaire',
+      type: 'multiselect',
+      options: ['Everyday Use', 'Photography', 'Gaming', 'Business'],
+    },
+    {
+      key: 'priority',
+      label: 'Primary Strength',
+      hint: 'What does this phone excel at — maps to Q3',
+      type: 'select',
+      options: ['Camera', 'Battery Life', 'Performance', 'Display'],
+    },
+    {
+      key: 'storage',
+      label: 'Storage Tier',
+      hint: 'Storage capacity this phone offers — maps to Q5',
+      type: 'select',
+      options: ['128GB', '256GB', '512GB+'],
+    },
+  ],
+  smartwatch: [
+    {
+      key: 'use_case',
+      label: 'Best For (Use Cases)',
+      hint: 'Select all that apply — maps to Q1 of the questionnaire',
+      type: 'multiselect',
+      options: ['Fitness Tracking', 'Health Monitoring', 'Notifications', 'Style'],
+    },
+    {
+      key: 'priority',
+      label: 'Primary Strength',
+      hint: 'What does this watch excel at — maps to Q3',
+      type: 'select',
+      options: ['Battery Life', 'Health Sensors', 'Display', 'GPS & Sports'],
+    },
+    {
+      key: 'compatibility',
+      label: 'Phone Compatibility',
+      hint: 'Which phones does it work with — maps to Q4',
+      type: 'select',
+      options: ['iPhone', 'Android', 'Any'],
+    },
+  ],
+  other: [],
+}
+
 const CATEGORY_COLORS = {
   laptop: 'bg-blue-500/20 text-blue-300',
   mobile: 'bg-green-500/20 text-green-300',
@@ -198,7 +271,7 @@ export default function Admin() {
     setEditingProduct(product)
     setImgPreviewError(false)
     if (product) {
-      setFormData(product)
+      setFormData({ ...product, tags: product.tags || {} })
     } else {
       setFormData({
         name: '',
@@ -209,6 +282,7 @@ export default function Admin() {
         image_url: '',
         affiliate_link: '',
         is_active: true,
+        tags: {},
         specs: {},
       })
     }
@@ -225,10 +299,24 @@ export default function Admin() {
 
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    })
+    if (name === 'category') {
+      setFormData({ ...formData, category: value, tags: {} })
+    } else {
+      setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value })
+    }
+  }
+
+  const handleTagChange = (key, value, isMulti) => {
+    const current = formData.tags || {}
+    if (isMulti) {
+      const existing = Array.isArray(current[key]) ? current[key] : []
+      const updated = existing.includes(value)
+        ? existing.filter(v => v !== value)
+        : [...existing, value]
+      setFormData({ ...formData, tags: { ...current, [key]: updated } })
+    } else {
+      setFormData({ ...formData, tags: { ...current, [key]: value } })
+    }
   }
 
   const handleSpecChange = (specKey, value) => {
@@ -652,6 +740,50 @@ export default function Admin() {
                     />
                   </button>
                 </div>
+
+                {/* Matching Tags */}
+                {TAG_FIELDS[formData.category || 'laptop']?.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex-1 h-px bg-[#1E2A45]" />
+                      <span className="text-[#8896B3] text-xs uppercase tracking-wider">Matching Tags</span>
+                      <div className="flex-1 h-px bg-[#1E2A45]" />
+                    </div>
+                    <p className="text-[#8896B3] text-xs mb-4 text-center">These must match the exact questionnaire answer values so Claude can match this product to the right users.</p>
+                    <div className="space-y-5">
+                      {TAG_FIELDS[formData.category || 'laptop'].map((field) => {
+                        const currentTags = formData.tags || {}
+                        return (
+                          <div key={field.key}>
+                            <label className="block text-[#8896B3] text-xs uppercase tracking-wider mb-0.5">{field.label}</label>
+                            <p className="text-[#8896B3]/50 text-xs mb-2">{field.hint}</p>
+                            <div className="flex flex-wrap gap-2">
+                              {field.options.map((option) => {
+                                const isSelected = field.type === 'multiselect'
+                                  ? (Array.isArray(currentTags[field.key]) && currentTags[field.key].includes(option))
+                                  : currentTags[field.key] === option
+                                return (
+                                  <button
+                                    key={option}
+                                    type="button"
+                                    onClick={() => handleTagChange(field.key, option, field.type === 'multiselect')}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
+                                      isSelected
+                                        ? 'border-[#2563EB] bg-[#2563EB]/20 text-[#F0F4FF]'
+                                        : 'border-[#1E2A45] bg-[#141B2D] text-[#8896B3] hover:border-[#2563EB]/50 hover:text-[#F0F4FF]'
+                                    }`}
+                                  >
+                                    {option}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {/* Specs Divider */}
                 {SPEC_FIELDS[formData.category || 'laptop'].length > 0 && (

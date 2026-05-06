@@ -1,5 +1,6 @@
 // Frontend API call helpers
 const API_BASE = '/api'
+import { MOCK_PRODUCTS } from '../utils/mockProducts'
 
 const MOCK_RECOMMENDATIONS = {
   laptop: [
@@ -101,6 +102,13 @@ export async function getRecommendations(category, answers) {
 }
 
 export async function getProducts(category, adminPassword) {
+  if (import.meta.env.VITE_DEV_MODE === 'true') {
+    const filtered = category === 'all'
+      ? MOCK_PRODUCTS
+      : MOCK_PRODUCTS.filter(p => p.category === category)
+    return filtered
+  }
+
   try {
     const response = await fetch(`${API_BASE}/admin/get-products?category=${category}`, {
       headers: {

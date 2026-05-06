@@ -31,16 +31,22 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to update product' })
     }
 
-    // Invalidate related cache keys
-    try {
-      const category = updateData.category
-      if (category) {
+    const { category } = updateData
+    if (category) {
+      try {
         const pattern = `rec:${category}:*`
-        // Note: Upstash doesn't support SCAN with pattern in REST API
-        // In production, you'd need to track cache keys or use a different approach
+        let cursor = 0
+        do {
+          const result = await redis.scan(cursor, { match: pattern, count: 100 })
+          cursor = result[0]
+          const keys = result[1]
+          if (keys.length > 0) {
+            await redis.del(...keys)
+          }
+        } while (cursor !== 0)
+      } catch (cacheError) {
+        console.error('Cache invalidation failed:', cacheError)
       }
-    } catch (error) {
-      console.log('Cache invalidation failed, but continuing')
     }
 
     return res.status(200).json(data)

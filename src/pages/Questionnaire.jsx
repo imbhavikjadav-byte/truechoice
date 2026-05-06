@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import LogoHeader from '../components/LogoHeader'
 
 const QUESTIONS_BY_CATEGORY = {
@@ -164,11 +164,13 @@ const QUESTIONS_BY_CATEGORY = {
 
 export default function Questionnaire({ category, onAnswersSubmit }) {
   const navigate = useNavigate()
-  const [currentStep, setCurrentStep] = useState(0)
-  const [answers, setAnswers] = useState({})
+  const location = useLocation()
+  const questions = QUESTIONS_BY_CATEGORY[category] || QUESTIONS_BY_CATEGORY.laptop
+  const initialStep = location.state?.startAtLast ? questions.length - 1 : 0
+  const [currentStep, setCurrentStep] = useState(initialStep)
+  const [answers, setAnswers] = useState(location.state?.answers || {})
   const [isTransitioning, setIsTransitioning] = useState(false)
 
-  const questions = QUESTIONS_BY_CATEGORY[category] || QUESTIONS_BY_CATEGORY.laptop
   const currentQuestion = questions[currentStep]
   const totalSteps = questions.length
 

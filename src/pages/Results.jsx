@@ -183,7 +183,7 @@ export default function Results({ recommendations, category, answers }) {
               🛒 Browse Best Deals on Amazon →
             </a>
             <button
-              onClick={() => navigate('/tell-us-your-needs')}
+              onClick={() => navigate('/tell-us-your-needs', { state: { startAtLast: true, answers } })}
               className="block w-full border border-[#1E2A45] text-[#F0F4FF] font-bold py-3 px-8 rounded-lg mb-4 transition-all hover:border-[#2563EB] hover:text-[#2563EB]"
             >
               ← Back to Questions

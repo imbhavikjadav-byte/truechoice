@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getRecommendations } from '../services/api'
 
@@ -12,8 +12,8 @@ const LOADING_MESSAGES = [
 
 export default function Loading({ category, answers, onResultsReady }) {
   const navigate = useNavigate()
-  const [messageIndex, setMessageIndex] = require('react').useState(0)
-  const [progress, setProgress] = require('react').useState(0)
+  const [messageIndex, setMessageIndex] = useState(0)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     // Cycle through messages

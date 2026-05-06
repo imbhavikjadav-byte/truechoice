@@ -105,12 +105,17 @@ function ProductCard({ product, index }) {
           <span className="text-[#8896B3] text-xs">{product.brand}</span>
         </div>
 
-        {/* Price + Rating + Match Score — single row */}
+        {/* Price button + Rating + Match Score — single row */}
         <div className="flex items-center justify-between">
-          <div>
-            <div className="text-[#2563EB] font-bold text-xl">{formatIndianPrice(product.price)}</div>
+          <div className="flex flex-col gap-1.5">
+            <span
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold text-white"
+              style={{ background: 'linear-gradient(135deg, #F97316, #EF4444)' }}
+            >
+              🏷️ Check Price
+            </span>
             {product.amazon_rating && (
-              <div className="flex items-center gap-1 text-[#8896B3] text-xs mt-0.5">
+              <div className="flex items-center gap-1 text-[#8896B3] text-xs">
                 <span className="text-[#F59E0B]">⭐</span>
                 <span>{product.amazon_rating}</span>
               </div>
@@ -152,7 +157,7 @@ function ProductCard({ product, index }) {
           onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 20px rgba(37,99,235,0.5)' }}
           onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none' }}
         >
-          View on Amazon →
+          🔥 Grab This Deal →
         </a>
       </div>
     </a>

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-primary: #080C14;
+  --bg-secondary: #0E1420;
+  --bg-tertiary: #141B2D;
+  --border: #1E2A45;
+  --accent-blue: #2563EB;
+  --accent-purple: #7C3AED;
+  --accent-gradient: linear-gradient(135deg, #2563EB, #7C3AED);
+  --text-primary: #F0F4FF;
+  --text-secondary: #8896B3;
+  --success: #10B981;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,8 +25,8 @@
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background-color: #0A0F1E;
-  color: #F8F9FF;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -23,8 +38,32 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   transform: translateY(-2px);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* Focus States */
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
 }
 
 .fade-in {

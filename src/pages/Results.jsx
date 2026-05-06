@@ -1,17 +1,186 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { formatIndianPrice, formatRating } from '../utils/formatters'
+import Logo from '../components/Logo'
+
+function ImageFallback({ name }) {
+  return (
+    <div className="w-full h-full flex items-center justify-center bg-[#141B2D]">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="18" width="48" height="32" rx="3" stroke="#8896B3" strokeWidth="2" fill="none"/>
+        <rect x="20" y="50" width="24" height="3" fill="#8896B3"/>
+        <rect x="16" y="53" width="32" height="2" rx="1" fill="#8896B3"/>
+        <rect x="12" y="22" width="40" height="24" rx="1" fill="#1E2A45"/>
+      </svg>
+    </div>
+  )
+}
+
+function CircleScore({ score }) {
+  const radius = 28
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (score / 100) * circumference
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-20 h-20">
+        <svg className="rotate-[-90deg]" width="80" height="80" viewBox="0 0 80 80">
+          <defs>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#2563EB" />
+              <stop offset="100%" stopColor="#7C3AED" />
+            </linearGradient>
+          </defs>
+          <circle cx="40" cy="40" r={radius} fill="none" stroke="#1E2A45" strokeWidth="6" />
+          <circle
+            cx="40"
+            cy="40"
+            r={radius}
+            fill="none"
+            stroke="url(#scoreGradient)"
+            strokeWidth="6"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-sm font-bold bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">
+            {score}%
+          </span>
+        </div>
+      </div>
+      <span className="text-[#8896B3] text-xs mt-1">Match Score</span>
+    </div>
+  )
+}
+
+function ProductCard({ product, index }) {
+  const [imgError, setImgError] = useState(false)
+
+  return (
+    <div
+      className={`flex flex-col rounded-2xl border overflow-hidden transition-all duration-500 animate-fade-in hover:-translate-y-1 ${
+        product.is_best_pick
+          ? 'border-[#2563EB] bg-[#0E1420]'
+          : 'border-[#1E2A45] bg-[#0E1420]'
+      }`}
+      style={{
+        animationDelay: `${index * 100}ms`,
+        boxShadow: product.is_best_pick ? '0 0 30px rgba(37, 99, 235, 0.2)' : undefined,
+      }}
+    >
+      {/* Best Pick Badge */}
+      {product.is_best_pick && (
+        <div className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white font-bold py-2 px-4 text-center text-sm">
+          ⭐ Best Pick
+        </div>
+      )}
+
+      {/* Image */}
+      <div className="h-[200px] w-full bg-[#141B2D] flex items-center justify-center overflow-hidden">
+        {product.image_url && !imgError ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="w-full h-full object-contain"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <ImageFallback name={product.name} />
+        )}
+      </div>
+
+      {/* Body */}
+      <div className="flex-1 p-5 flex flex-col">
+        {/* Name */}
+        <h3 className="font-display font-bold text-[#F0F4FF] text-lg mb-2 leading-snug">
+          {product.name}
+        </h3>
+
+        {/* Brand + Category row */}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="bg-[#141B2D] text-[#8896B3] text-xs px-2 py-1 rounded-full">
+            {product.brand}
+          </span>
+        </div>
+
+        {/* Price */}
+        <div className="text-[#2563EB] font-bold text-2xl mb-2">
+          {formatIndianPrice(product.price)}
+        </div>
+
+        {/* Rating */}
+        {product.amazon_rating && (
+          <div className="flex items-center gap-1 text-[#8896B3] text-sm mb-4">
+            <span className="text-[#F59E0B]">⭐</span>
+            <span>{product.amazon_rating}</span>
+          </div>
+        )}
+
+        {/* Match Score */}
+        <div className="flex justify-center mb-4">
+          <CircleScore score={product.match_score || 0} />
+        </div>
+
+        {/* Reasoning */}
+        {product.reasoning && (
+          <div className="border-l-2 border-[#2563EB] pl-3 mb-4">
+            <p className="text-[#8896B3] text-xs uppercase tracking-wider mb-1">Why this suits you</p>
+            <p className="text-[#F0F4FF] text-sm leading-relaxed">{product.reasoning}</p>
+          </div>
+        )}
+
+        {/* Specs Pills */}
+        {product.specs && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {Object.entries(product.specs).map(([key, value]) => (
+              <span
+                key={key}
+                className="bg-[#141B2D] text-[#8896B3] rounded-full px-3 py-1 text-xs"
+              >
+                {value}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* CTA */}
+        <a
+          href={product.affiliate_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 block w-full text-white font-bold py-3 rounded-lg text-center transition-all duration-300 hover:-translate-y-0.5"
+          style={{
+            background: 'linear-gradient(135deg, #2563EB, #7C3AED)',
+            boxShadow: 'none',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 20px rgba(37,99,235,0.5)' }}
+          onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none' }}
+        >
+          View on Amazon →
+        </a>
+      </div>
+    </div>
+  )
+}
 
 export default function Results({ recommendations, category, answers }) {
   const navigate = useNavigate()
 
   if (!recommendations || recommendations.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-navy via-navy to-blue-900 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-[#080C14] flex items-center justify-center px-6">
         <div className="text-center">
-          <p className="text-2xl text-light-bg mb-6">No recommendations found</p>
+          <p className="text-2xl text-[#F0F4FF] mb-6">No recommendations found</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-accent-blue hover:bg-blue-600 text-navy font-bold py-3 px-8 rounded-lg"
+            className="text-white font-bold py-3 px-8 rounded-lg"
+            style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)' }}
           >
             Back to Home
           </button>
@@ -20,161 +189,56 @@ export default function Results({ recommendations, category, answers }) {
     )
   }
 
-  const handleShare = () => {
-    const text = `Check out these AI-recommended laptops from TrueChoice! 🎯`
-    if (navigator.share) {
-      navigator.share({
-        title: 'TrueChoice Recommendations',
-        text: text,
-        url: window.location.href,
-      })
-    } else {
-      navigator.clipboard.writeText(window.location.href)
-      alert('Link copied to clipboard!')
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-navy via-navy to-blue-900 flex flex-col">
-      {/* Header */}
-      <nav className="px-6 py-4 flex justify-between items-center border-b border-accent-blue/20">
-        <button
-          onClick={() => navigate('/')}
-          className="text-2xl font-display font-bold text-accent-blue hover:text-blue-400 transition"
-        >
-          TrueChoice
+    <div className="min-h-screen bg-[#080C14] flex flex-col">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-40 h-16 flex items-center px-6 border-b border-[#1E2A45] bg-[#0E1420]">
+        <button onClick={() => navigate('/')} className="hover:opacity-80 transition-opacity">
+          <Logo />
         </button>
-        <div className="text-sm text-light-bg/70">Your Perfect Matches</div>
+        <div className="flex-1" />
+        <span className="text-sm text-[#8896B3]">Your Perfect Matches</span>
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 px-6 py-12">
-        <div className="max-w-6xl mx-auto">
-          {/* Title Section */}
-          <div className="text-center mb-12 fade-in">
-            <h1 className="text-5xl md:text-6xl font-display font-bold text-light-bg mb-4">
+      <div className="flex-1 px-4 md:px-6 py-12">
+        <div className="max-w-[1200px] mx-auto">
+          {/* Title */}
+          <div className="text-center mb-12 animate-fade-in">
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-[#F0F4FF] mb-4">
               Your Perfect Matches
             </h1>
-            <p className="text-xl text-light-bg/70">
-              Based on your answers, here are your top 3 picks
+            <p className="text-lg text-[#8896B3]">
+              Based on your answers, here are your top picks
             </p>
           </div>
 
-          {/* Product Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Cards Grid — 3 cols desktop, 2 tablet, 1 mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {recommendations.map((product, index) => (
-              <div
-                key={product.id}
-                className={`rounded-lg border-2 overflow-hidden transition-all duration-500 fade-in hover:shadow-lg hover:shadow-accent-blue/30 ${
-                  product.is_best_pick
-                    ? 'bg-accent-blue/10 border-accent-blue md:scale-105 md:z-10'
-                    : 'bg-navy/30 border-accent-blue/20'
-                }`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {/* Best Pick Badge */}
-                {product.is_best_pick && (
-                  <div className="bg-gradient-to-r from-accent-blue to-blue-400 text-navy font-bold py-2 px-4 text-center">
-                    ⭐ Best Pick
-                  </div>
-                )}
-
-                {/* Image */}
-                <div className="aspect-video bg-navy/50 overflow-hidden flex items-center justify-center">
-                  {product.image_url ? (
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="text-4xl">💻</div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  {/* Name and Brand */}
-                  <h3 className="text-xl font-bold text-light-bg mb-2">{product.name}</h3>
-                  <div className="inline-block bg-accent-blue/20 border border-accent-blue/30 rounded-full px-3 py-1 text-sm text-accent-blue mb-4">
-                    {product.brand}
-                  </div>
-
-                  {/* Price and Rating */}
-                  <div className="mb-4">
-                    <div className="text-3xl font-bold text-accent-blue mb-2">
-                      {formatIndianPrice(product.price)}
-                    </div>
-                    {product.amazon_rating && (
-                      <div className="text-light-bg/70">
-                        {formatRating(product.amazon_rating)}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Match Score */}
-                  <div className="bg-navy/50 rounded-lg px-3 py-2 mb-4 text-center">
-                    <div className="text-sm text-light-bg/60">Match Score</div>
-                    <div className="text-2xl font-bold text-accent-blue">{product.match_score}%</div>
-                  </div>
-
-                  {/* Reasoning */}
-                  <p className="text-light-bg/80 text-sm mb-6 leading-relaxed">
-                    <strong>Why this is perfect for you:</strong> {product.reasoning}
-                  </p>
-
-                  {/* Specs Pills */}
-                  {product.specs && (
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {Object.entries(product.specs).slice(0, 3).map(([key, value]) => (
-                        <span key={key} className="bg-accent-blue/10 border border-accent-blue/30 rounded-full px-3 py-1 text-xs text-light-bg/70">
-                          {value}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* CTA Button */}
-                  <a
-                    href={product.affiliate_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full bg-accent-blue hover:bg-blue-600 text-navy font-bold py-3 rounded-lg text-center transition-all duration-300 hover:shadow-lg hover:shadow-accent-blue/50"
-                  >
-                    View on Amazon →
-                  </a>
-                </div>
-              </div>
+              <ProductCard key={product.id || index} product={product} index={index} />
             ))}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 justify-center mb-12">
+          {/* Bottom Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 mb-12">
             <button
               onClick={() => navigate('/')}
-              className="px-6 py-3 rounded-lg border-2 border-accent-blue/30 text-light-bg hover:border-accent-blue/60 hover:bg-accent-blue/10 transition-all"
+              className="px-6 py-3 rounded-lg border border-[#1E2A45] text-[#8896B3] hover:text-[#F0F4FF] hover:border-[#2563EB] transition-all"
             >
               🔄 Start Over
             </button>
             <button
               onClick={() => navigate('/questionnaire')}
-              className="px-6 py-3 rounded-lg border-2 border-accent-blue/30 text-light-bg hover:border-accent-blue/60 hover:bg-accent-blue/10 transition-all"
+              className="px-6 py-3 rounded-lg bg-[#141B2D] text-[#F0F4FF] hover:bg-[#1E2A45] transition-all"
             >
-              ✏️ Refine My Search
-            </button>
-            <button
-              onClick={handleShare}
-              className="px-6 py-3 rounded-lg bg-accent-blue/10 border-2 border-accent-blue/30 text-light-bg hover:bg-accent-blue/20 hover:border-accent-blue/60 transition-all"
-            >
-              📤 Share Results
+              ✏️ Refine Search
             </button>
           </div>
 
           {/* Affiliate Disclosure */}
-          <div className="bg-navy/50 border border-accent-blue/20 rounded-lg p-6 text-center text-sm text-light-bg/60">
-            <p>
-              💡 TrueChoice is a participant in the Amazon Associates programme. We earn a small commission when you purchase through our links, at no extra cost to you.
-            </p>
+          <div className="border border-[#1E2A45] rounded-xl p-6 text-center text-sm text-[#8896B3]">
+            💡 TrueChoice participates in the Amazon Associates programme. We earn a small commission when you purchase through our links, at no extra cost to you.
           </div>
         </div>
       </div>

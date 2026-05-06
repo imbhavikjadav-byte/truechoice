@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import Logo from '../components/Logo'
 
 export default function Home({ onCategorySelect }) {
   const navigate = useNavigate()
@@ -9,11 +10,13 @@ export default function Home({ onCategorySelect }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-navy via-navy to-blue-900 flex flex-col">
+    <div className="min-h-screen bg-[#080C14] flex flex-col"
+      style={{ backgroundImage: 'radial-gradient(ellipse at 80% 0%, rgba(37, 99, 235, 0.07) 0%, transparent 60%)' }}
+    >
       {/* Navigation */}
-      <nav className="px-6 py-4 flex justify-between items-center border-b border-accent-blue/20">
-        <div className="text-2xl font-display font-bold text-accent-blue">TrueChoice</div>
-        <div className="text-sm text-light-bg/70">AI-Powered Recommendations</div>
+      <nav className="sticky top-0 z-40 h-16 flex items-center justify-between px-6 border-b border-transparent bg-transparent">
+        <Logo />
+        <div className="text-sm text-[#8896B3]">AI-Powered Recommendations</div>
       </nav>
 
       {/* Hero Section */}

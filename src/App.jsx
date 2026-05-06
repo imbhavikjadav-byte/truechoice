@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState } from 'react'
+import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import Questionnaire from './pages/Questionnaire'
 import Loading from './pages/Loading'
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home onCategorySelect={(cat) => setSelectedCategory(cat)} />} />
         <Route 

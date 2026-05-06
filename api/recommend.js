@@ -99,28 +99,9 @@ export default async function handler(req, res) {
 
     if (products.length === 0) {
       return res.status(200).json({
-        recommendations: [
-          {
-            id: 'demo1',
-            name: 'ASUS ROG Strix G15',
-            brand: 'ASUS',
-            price: 75000,
-            image_url: 'https://via.placeholder.com/400x300?text=ASUS+ROG',
-            affiliate_link: 'https://amazon.in',
-            amazon_rating: 4.4,
-            match_score: 96,
-            is_best_pick: true,
-            reasoning: 'Perfect for gaming with powerful GPU and 144Hz display.',
-            specs: {
-              processor: 'AMD Ryzen 7 6800H',
-              ram: '16GB',
-              storage: '512GB SSD',
-              display: '15.6 inch 144Hz FHD',
-              battery: '4 hours',
-            },
-          },
-        ],
+        recommendations: [],
         from_cache: false,
+        error: 'no_products',
       })
     }
 

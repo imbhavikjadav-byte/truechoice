@@ -167,14 +167,26 @@ export default function Results({ recommendations, category, answers }) {
       <div className="min-h-screen bg-[#080C14] flex flex-col">
         <LogoHeader />
         <div className="flex-1 flex items-center justify-center px-6">
-          <div className="text-center">
-            <p className="text-2xl text-[#F0F4FF] mb-6">No recommendations found</p>
-            <button
-              onClick={() => navigate('/')}
-              className="text-white font-bold py-3 px-8 rounded-lg"
+          <div className="text-center max-w-md">
+            <div className="text-5xl mb-6">🛠️</div>
+            <h2 className="text-2xl font-display font-bold text-[#F0F4FF] mb-3">We're stocking up!</h2>
+            <p className="text-[#8896B3] mb-8 leading-relaxed">
+              Our product catalogue is being set up. Check back soon — we're adding top picks for you.
+            </p>
+            <a
+              href="https://amzn.to/4u7cNSY"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-white font-bold py-3 px-8 rounded-lg mb-4 transition-all hover:opacity-90"
               style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)' }}
             >
-              Try Again →
+              🛒 Browse Best Deals on Amazon →
+            </a>
+            <button
+              onClick={() => navigate('/')}
+              className="text-[#8896B3] hover:text-[#F0F4FF] text-sm transition-colors"
+            >
+              ← Back to Home
             </button>
           </div>
         </div>

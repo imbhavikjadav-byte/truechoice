@@ -30,7 +30,7 @@ export default function Logo({ showText = true, showBadge = false, size = 28, fo
       {showText && (
         <div className="flex items-center gap-2">
           <span style={{ fontSize }}>
-            <span style={{ color: '#F0F4FF', fontFamily: 'Playfair Display', fontWeight: 300 }}>True</span><span style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Playfair Display', fontWeight: 700 }}>Choice</span>
+            <span style={{ color: '#F0F4FF', fontFamily: 'Georgia, serif', fontWeight: 300 }}>True</span><span style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Georgia, serif', fontWeight: 700 }}>Choice</span>
           </span>
           {showBadge && (
             <span className="px-2 py-1 bg-[#141B2D] text-[#8896B3] text-xs font-semibold rounded-full">

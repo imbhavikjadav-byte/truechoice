@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /finding-your-picks
+
+Sitemap: https://truechoice.vercel.app/sitemap.xml

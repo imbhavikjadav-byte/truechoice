@@ -170,8 +170,8 @@ export default function Home({ onCategorySelect }) {
           {/* Mobile: same content as desktop */}
           <div className="grid grid-cols-1 gap-6 md:hidden">
             {[
-              { icon: '🎯', step: 'Step 1', desc: 'Pick a category & answer quick questions', badge: '✓ Powered by Claude AI' },
-              { icon: '🤖', step: 'Step 2', desc: 'AI analyses & matches your needs', badge: '✓ 100% Free — No signup needed' },
+              { icon: '🎯', step: 'Step 1', desc: 'Pick a category & answer quick questions', badge: '✓ 100% Free — No signup needed' },
+              { icon: '🤖', step: 'Step 2', desc: 'AI analyses & matches your needs', badge: '✓ Powered by Claude AI' },
               { icon: '✨', step: 'Step 3', desc: 'Get your top 3 personalised picks', badge: '✓ Amazon Verified Products' },
             ].map(({ icon, step, desc, badge }) => (
               <div key={step} className="flex flex-col items-center gap-3">

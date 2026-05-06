@@ -164,10 +164,17 @@ function ProductCard({ product, index }) {
   )
 }
 
+const AMAZON_LINKS = {
+  laptop:     { url: 'https://amzn.to/48HBnBt', label: '💻 Shop Top Laptop Deals on Amazon →' },
+  mobile:     { url: 'https://amzn.to/4f7i0pj', label: '📱 Shop Top Mobile Phone Deals on Amazon →' },
+  smartwatch: { url: 'https://amzn.to/3P2GDZQ', label: '⌚ Shop Top Smartwatch Deals on Amazon →' },
+}
+
 export default function Results({ recommendations, category, answers }) {
   const navigate = useNavigate()
 
   if (!recommendations || recommendations.length === 0) {
+    const amazonLink = AMAZON_LINKS[category] || AMAZON_LINKS.laptop
     return (
       <div className="min-h-screen bg-[#080C14] flex flex-col">
         <LogoHeader />
@@ -179,13 +186,13 @@ export default function Results({ recommendations, category, answers }) {
               Our product catalogue is being set up. Check back soon — we're adding top picks for you.
             </p>
             <a
-              href="https://amzn.to/4u7cNSY"
+              href={amazonLink.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-white font-bold py-3 px-8 rounded-lg mb-4 transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)' }}
+              className="block w-full text-gray-900 font-bold py-3 px-8 rounded-lg mb-4 transition-all hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #F97316, #EF4444)' }}
             >
-              🛒 Browse Best Deals on Amazon →
+              {amazonLink.label}
             </a>
             <button
               onClick={() => navigate('/tell-us-your-needs', { state: { startAtLast: true, answers } })}

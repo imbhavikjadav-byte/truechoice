@@ -453,7 +453,7 @@ export default function Admin() {
     { value: 'all', label: 'All' },
     { value: 'laptop', label: 'Laptops' },
     { value: 'mobile', label: 'Mobile Phones' },
-    { value: 'smartwatch', label: 'Smart Watches' },
+    { value: 'smartwatch', label: 'Smartwatches' },
   ]
 
   return (
@@ -644,7 +644,7 @@ export default function Admin() {
                       >
                         <option value="laptop">Laptop</option>
                         <option value="mobile">Mobile Phone</option>
-                        <option value="smartwatch">Smart Watch</option>
+                        <option value="smartwatch">Smartwatch</option>
                         <option value="other">Other</option>
                       </select>
                       <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8896B3" strokeWidth="2">

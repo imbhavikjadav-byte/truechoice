@@ -1,5 +1,5 @@
 export const MOCK_PRODUCTS = [
-  // ── Smart Watches ────────────────────────────────────────────
+  // ── Smartwatches ─────────────────────────────────────────────
   {
     id: 'mock-sw-1',
     name: 'Apple Watch Series 9 (GPS, 41mm)',

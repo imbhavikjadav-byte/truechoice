@@ -83,7 +83,7 @@ const CATEGORIES = [
   },
   {
     id: 'smartwatch',
-    label: 'Smart Watches',
+    label: 'Smartwatches',
     icon: '⌚',
     description: 'Track health, stay connected, look great',
     gradient: 'from-[#0891B2] to-[#0E7490]',

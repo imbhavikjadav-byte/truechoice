@@ -20,7 +20,7 @@ const LOADING_MESSAGES = {
   ],
   smartwatch: [
     'Understanding your lifestyle...',
-    'Browsing 20+ smart watches...',
+    'Browsing 20+ smartwatches...',
     'Comparing health sensors & battery life...',
     'Checking Amazon ratings & reviews...',
     'Finalising your perfect match...',

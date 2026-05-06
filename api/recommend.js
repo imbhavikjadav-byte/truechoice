@@ -1,5 +1,11 @@
 import { Redis } from '@upstash/redis'
+import { createClient } from '@supabase/supabase-js'
 import { MOCK_PRODUCTS } from '../src/utils/mockProducts.js'
+
+const supabase = createClient(
+  process.env.VITE_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
 
 const isDev = process.env.VITE_DEV_MODE === 'true'
 
@@ -95,7 +101,21 @@ export default async function handler(req, res) {
     }
 
     // Use mock products in dev mode, otherwise fetch from Supabase
-    const products = isDev ? MOCK_PRODUCTS : []
+    let products = []
+    if (isDev) {
+      products = MOCK_PRODUCTS
+    } else {
+      const { data, error: dbError } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', category)
+        .eq('is_active', true)
+      if (dbError) {
+        console.error('Supabase fetch error:', dbError)
+        return res.status(500).json({ error: 'Failed to fetch products' })
+      }
+      products = data || []
+    }
 
     if (products.length === 0) {
       return res.status(200).json({

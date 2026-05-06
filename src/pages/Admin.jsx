@@ -88,7 +88,7 @@ function ProductCardAdmin({ product, onEdit, onDelete, onToggleActive }) {
         <h3 className="text-[#F0F4FF] font-bold text-sm mb-2 leading-snug line-clamp-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>{product.name}</h3>
         <div className="flex items-center gap-2 flex-wrap mb-3">
           <span className="bg-[#141B2D] text-[#8896B3] text-xs px-2 py-0.5 rounded-full">{product.brand}</span>
-          <span className={`text-xs px-2 py-0.5 rounded-full ${CATEGORY_COLORS[product.category] || CATEGORY_COLORS.other}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${CATEGORY_COLORS[product.category] || CATEGORY_COLORS.other}`}>
             {product.category}
           </span>
         </div>

@@ -7,38 +7,31 @@ import { useToast, ToastContainer } from '../components/ToastNotification'
 
 const SPEC_FIELDS = {
   laptop: [
-    { key: 'processor', label: 'Processor', required: true },
-    { key: 'ram', label: 'RAM', required: true },
-    { key: 'storage', label: 'Storage', required: true },
-    { key: 'display', label: 'Display', required: true },
-    { key: 'battery', label: 'Battery', required: true },
-    { key: 'weight', label: 'Weight', required: true },
-    { key: 'os', label: 'OS', required: true },
-    { key: 'graphics', label: 'Graphics', required: false },
+    { key: 'processor', label: 'Processor', required: true, placeholder: 'e.g. Intel Core i5 13th Gen' },
+    { key: 'ram', label: 'RAM', required: true, placeholder: 'e.g. 16GB DDR5' },
+    { key: 'storage', label: 'Storage', required: true, placeholder: 'e.g. 512GB NVMe SSD' },
+    { key: 'display', label: 'Display', required: true, placeholder: 'e.g. 15.6" FHD IPS 144Hz' },
+    { key: 'battery', label: 'Battery Life', required: true, placeholder: 'e.g. 8 hours typical use' },
+    { key: 'weight', label: 'Weight', required: true, placeholder: 'e.g. 1.8 kg' },
+    { key: 'os', label: 'Operating System', required: true, placeholder: 'e.g. Windows 11 Home' },
+    { key: 'graphics', label: 'Graphics Card', required: false, placeholder: 'e.g. NVIDIA RTX 4060 8GB' },
   ],
   mobile: [
-    { key: 'processor', label: 'Processor', required: true },
-    { key: 'ram', label: 'RAM', required: true },
-    { key: 'storage', label: 'Storage', required: true },
-    { key: 'camera', label: 'Camera', required: true },
-    { key: 'battery', label: 'Battery', required: true },
-    { key: 'display', label: 'Display', required: true },
-    { key: 'os', label: 'OS', required: true },
-  ],
-  earphone: [
-    { key: 'driver_size', label: 'Driver Size', required: true },
-    { key: 'frequency_response', label: 'Frequency Response', required: true },
-    { key: 'battery', label: 'Battery', required: true },
-    { key: 'connectivity', label: 'Connectivity', required: true },
-    { key: 'noise_cancellation', label: 'Noise Cancellation', required: true },
+    { key: 'processor', label: 'Processor', required: true, placeholder: 'e.g. Snapdragon 8 Gen 3' },
+    { key: 'ram', label: 'RAM', required: true, placeholder: 'e.g. 12GB LPDDR5' },
+    { key: 'storage', label: 'Storage', required: true, placeholder: 'e.g. 256GB UFS 3.1' },
+    { key: 'camera', label: 'Camera Setup', required: true, placeholder: 'e.g. 50MP + 12MP + 10MP triple' },
+    { key: 'battery', label: 'Battery & Charging', required: true, placeholder: 'e.g. 5000mAh, 67W fast charge' },
+    { key: 'display', label: 'Display', required: true, placeholder: 'e.g. 6.7" AMOLED 120Hz' },
+    { key: 'os', label: 'Operating System', required: true, placeholder: 'e.g. Android 14' },
   ],
   smartwatch: [
-    { key: 'display', label: 'Display', required: true },
-    { key: 'battery', label: 'Battery Life', required: true },
-    { key: 'health_sensors', label: 'Health Sensors', required: true },
-    { key: 'connectivity', label: 'Connectivity', required: true },
-    { key: 'compatibility', label: 'Compatibility', required: true },
-    { key: 'water_resistance', label: 'Water Resistance', required: false },
+    { key: 'display', label: 'Display', required: true, placeholder: 'e.g. 1.9" Always-On AMOLED' },
+    { key: 'battery', label: 'Battery Life', required: true, placeholder: 'e.g. Up to 18 hours typical use' },
+    { key: 'health_sensors', label: 'Health Sensors', required: true, placeholder: 'e.g. ECG, SpO2, Heart Rate, Skin Temp' },
+    { key: 'connectivity', label: 'Connectivity', required: true, placeholder: 'e.g. Bluetooth 5.3, Wi-Fi, NFC' },
+    { key: 'compatibility', label: 'Phone Compatibility', required: true, placeholder: 'e.g. iPhone only / Android / Both' },
+    { key: 'water_resistance', label: 'Water Resistance', required: false, placeholder: 'e.g. 50 metres / 5 ATM / IP68' },
   ],
   other: [],
 }
@@ -46,7 +39,6 @@ const SPEC_FIELDS = {
 const CATEGORY_COLORS = {
   laptop: 'bg-blue-500/20 text-blue-300',
   mobile: 'bg-green-500/20 text-green-300',
-  earphone: 'bg-purple-500/20 text-purple-300',
   smartwatch: 'bg-cyan-500/20 text-cyan-300',
   other: 'bg-gray-500/20 text-gray-300',
 }
@@ -372,9 +364,8 @@ export default function Admin() {
   const CATEGORY_TABS = [
     { value: 'all', label: 'All' },
     { value: 'laptop', label: 'Laptops' },
-    { value: 'mobile', label: 'Mobiles' },
-    { value: 'smartwatch', label: 'Watches' },
-    { value: 'earphone', label: 'Earphones' },
+    { value: 'mobile', label: 'Mobile Phones' },
+    { value: 'smartwatch', label: 'Smart Watches' },
   ]
 
   return (
@@ -556,16 +547,22 @@ export default function Admin() {
                   </div>
                   <div>
                     <label className="block text-[#8896B3] text-xs uppercase tracking-wider mb-2">Category *</label>
-                    <select
-                      name="category"
-                      value={formData.category || 'laptop'}
-                      onChange={handleFormChange}
-                      className="w-full bg-[#141B2D] border border-[#1E2A45] rounded-lg px-4 py-2.5 text-[#F0F4FF] focus:outline-none focus:border-[#2563EB] transition-colors"
-                    >
-                      <option value="laptop">Laptop</option>
-                      <option value="mobile">Mobile</option>                    <option value="smartwatch">Smart Watch</option>                      <option value="earphone">Earphone</option>
-                      <option value="other">Other</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        name="category"
+                        value={formData.category || 'laptop'}
+                        onChange={handleFormChange}
+                        className="w-full bg-[#141B2D] border border-[#1E2A45] rounded-lg pl-4 pr-10 py-2.5 text-[#F0F4FF] focus:outline-none focus:border-[#2563EB] transition-colors appearance-none"
+                      >
+                        <option value="laptop">Laptop</option>
+                        <option value="mobile">Mobile Phone</option>
+                        <option value="smartwatch">Smart Watch</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8896B3" strokeWidth="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                      </svg>
+                    </div>
                   </div>
                 </div>
 
@@ -675,7 +672,7 @@ export default function Admin() {
                             type="text"
                             value={formData.specs?.[spec.key] || ''}
                             onChange={(e) => handleSpecChange(spec.key, e.target.value)}
-                            placeholder={`Enter ${spec.label.toLowerCase()}`}
+                            placeholder={spec.placeholder || `e.g. ${spec.label}`}
                             className="w-full bg-[#141B2D] border border-[#1E2A45] rounded-lg px-4 py-2.5 text-[#F0F4FF] placeholder-[#8896B3]/50 focus:outline-none focus:border-[#2563EB] transition-colors"
                           />
                         </div>
@@ -687,7 +684,7 @@ export default function Admin() {
             </div>
 
             {/* Modal Footer — sticky */}
-            <div className="flex items-center gap-3 px-6 py-4 border-t border-[#1E2A45] bg-[#0E1420]">
+            <div className="flex items-center gap-3 px-6 py-4 border-t border-[#1E2A45] bg-[#0E1420] rounded-b-2xl">
               <button
                 type="button"
                 onClick={handleCloseForm}

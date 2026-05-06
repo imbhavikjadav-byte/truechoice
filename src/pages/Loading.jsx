@@ -7,23 +7,23 @@ const LOADING_MESSAGES = {
   laptop: [
     'Understanding your needs...',
     'Browsing 25+ laptops...',
-    'Comparing specs and prices...',
-    'Checking Amazon ratings...',
+    'Comparing specs and performance...',
+    'Checking Amazon ratings & reviews...',
     'Finalising your matches...',
   ],
   mobile: [
-    'Analysing your usage...',
-    'Scanning top smartphones...',
-    'Comparing cameras & performance...',
-    'Checking Amazon ratings...',
+    'Understanding your usage habits...',
+    'Browsing 30+ mobile phones...',
+    'Comparing cameras, RAM & battery...',
+    'Checking Amazon ratings & reviews...',
     'Finalising your top picks...',
   ],
   smartwatch: [
     'Understanding your lifestyle...',
-    'Browsing smart watches...',
-    'Comparing health features & battery...',
-    'Checking Amazon ratings...',
-    'Finalising your matches...',
+    'Browsing 20+ smart watches...',
+    'Comparing health sensors & battery life...',
+    'Checking Amazon ratings & reviews...',
+    'Finalising your perfect match...',
   ],
 }
 

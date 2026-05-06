@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home onCategorySelect={(cat) => setSelectedCategory(cat)} />} />
         <Route 
-          path="/questionnaire" 
+          path="/tell-us-your-needs" 
           element={
             <Questionnaire 
               category={selectedCategory}
@@ -28,7 +28,7 @@ function App() {
           } 
         />
         <Route 
-          path="/loading" 
+          path="/finding-your-picks" 
           element={
             <Loading 
               category={selectedCategory}
@@ -38,7 +38,7 @@ function App() {
           } 
         />
         <Route 
-          path="/results" 
+          path="/your-top-picks" 
           element={
             <Results 
               recommendations={recommendations}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getProducts, addProduct, updateProduct, deleteProduct } from '../services/api'
 import Logo from '../components/Logo'
+import LogoHeader from '../components/LogoHeader'
 import { useToast, ToastContainer } from '../components/ToastNotification'
 
 const SPEC_FIELDS = {
@@ -31,6 +32,14 @@ const SPEC_FIELDS = {
     { key: 'connectivity', label: 'Connectivity', required: true },
     { key: 'noise_cancellation', label: 'Noise Cancellation', required: true },
   ],
+  smartwatch: [
+    { key: 'display', label: 'Display', required: true },
+    { key: 'battery', label: 'Battery Life', required: true },
+    { key: 'health_sensors', label: 'Health Sensors', required: true },
+    { key: 'connectivity', label: 'Connectivity', required: true },
+    { key: 'compatibility', label: 'Compatibility', required: true },
+    { key: 'water_resistance', label: 'Water Resistance', required: false },
+  ],
   other: [],
 }
 
@@ -38,6 +47,7 @@ const CATEGORY_COLORS = {
   laptop: 'bg-blue-500/20 text-blue-300',
   mobile: 'bg-green-500/20 text-green-300',
   earphone: 'bg-purple-500/20 text-purple-300',
+  smartwatch: 'bg-cyan-500/20 text-cyan-300',
   other: 'bg-gray-500/20 text-gray-300',
 }
 
@@ -83,7 +93,7 @@ function ProductCardAdmin({ product, onEdit, onDelete, onToggleActive }) {
 
       {/* Body */}
       <div className="flex-1 p-4">
-        <h3 className="text-[#F0F4FF] font-bold text-sm mb-2 leading-snug line-clamp-2">{product.name}</h3>
+        <h3 className="text-[#F0F4FF] font-bold text-sm mb-2 leading-snug line-clamp-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>{product.name}</h3>
         <div className="flex items-center gap-2 flex-wrap mb-3">
           <span className="bg-[#141B2D] text-[#8896B3] text-xs px-2 py-0.5 rounded-full">{product.brand}</span>
           <span className={`text-xs px-2 py-0.5 rounded-full ${CATEGORY_COLORS[product.category] || CATEGORY_COLORS.other}`}>
@@ -157,6 +167,12 @@ export default function Admin() {
   const [imgPreviewError, setImgPreviewError] = useState(false)
 
   const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD
+
+  useEffect(() => {
+    const prev = document.title
+    document.title = 'TrueChoice — Admin'
+    return () => { document.title = prev }
+  }, [])
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -311,11 +327,11 @@ export default function Admin() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-[#080C14] flex items-center justify-center px-6">
+      <div className="min-h-screen bg-[#080C14] flex flex-col">
+        <LogoHeader />
+        <div className="flex-1 flex items-center justify-center px-6 pb-16">
         <div className="bg-[#0E1420] border border-[#1E2A45] rounded-2xl p-8 max-w-md w-full shadow-2xl">
-          <div className="flex justify-center mb-8">
-            <Logo />
-          </div>
+          <div />
           <h1 className="text-2xl font-display font-bold text-[#F0F4FF] text-center mb-2">
             Admin Console
           </h1>
@@ -344,6 +360,7 @@ export default function Admin() {
             ← Back to Home
           </button>
         </div>
+        </div>
       </div>
     )
   }
@@ -356,6 +373,7 @@ export default function Admin() {
     { value: 'all', label: 'All' },
     { value: 'laptop', label: 'Laptops' },
     { value: 'mobile', label: 'Mobiles' },
+    { value: 'smartwatch', label: 'Watches' },
     { value: 'earphone', label: 'Earphones' },
   ]
 
@@ -365,17 +383,16 @@ export default function Admin() {
     >
       <ToastContainer toasts={toasts} />
 
-      {/* Navbar */}
-      <nav className="sticky top-0 z-40 h-16 flex items-center px-6 border-b border-[#1E2A45] bg-[#0E1420] shadow-sm">
-        <Logo showText showBadge />
-        <div className="flex-1" />
+      {/* Centered logo header with logout */}
+      <div className="relative">
+        <LogoHeader showBadge />
         <button
           onClick={() => { setIsLoggedIn(false); navigate('/') }}
-          className="text-[#8896B3] hover:text-[#EF4444] text-sm font-semibold border border-[#1E2A45] hover:border-[#EF4444] px-4 py-2 rounded-lg transition-all"
+          className="absolute right-6 top-1/2 -translate-y-1/2 text-[#8896B3] hover:text-[#EF4444] text-sm font-semibold border border-[#1E2A45] hover:border-[#EF4444] px-4 py-2 rounded-lg transition-all"
         >
           Logout
         </button>
-      </nav>
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 px-4 md:px-8 py-8">
@@ -546,8 +563,7 @@ export default function Admin() {
                       className="w-full bg-[#141B2D] border border-[#1E2A45] rounded-lg px-4 py-2.5 text-[#F0F4FF] focus:outline-none focus:border-[#2563EB] transition-colors"
                     >
                       <option value="laptop">Laptop</option>
-                      <option value="mobile">Mobile</option>
-                      <option value="earphone">Earphone</option>
+                      <option value="mobile">Mobile</option>                    <option value="smartwatch">Smart Watch</option>                      <option value="earphone">Earphone</option>
                       <option value="other">Other</option>
                     </select>
                   </div>

@@ -18,7 +18,7 @@ export default {
         'tc-warning': '#F59E0B',
       },
       fontFamily: {
-        'display': ['Playfair Display', 'serif'],
+        'display': ['Outfit', 'sans-serif'],
         'body': ['DM Sans', 'sans-serif'],
       },
       keyframes: {

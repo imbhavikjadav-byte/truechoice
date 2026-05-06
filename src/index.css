@@ -23,6 +23,10 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
   background-color: var(--bg-primary);
@@ -30,7 +34,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Outfit', sans-serif;
   font-weight: 700;
 }
 
@@ -40,6 +44,12 @@ button {
 
 button:hover:not(:disabled) {
   transform: translateY(-2px);
+}
+
+button.no-lift,
+button.no-lift:hover,
+button.no-lift:hover:not(:disabled) {
+  transform: none !important;
 }
 
 /* Scrollbar Styling */
@@ -108,5 +118,21 @@ button:hover:not(:disabled) {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Mobile Layout Fixes */
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+  }
+  .hero-tagline {
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+    padding: 0 20px;
+    font-size: 1rem;
   }
 }

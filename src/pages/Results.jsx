@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { formatIndianPrice, formatRating } from '../utils/formatters'
-import Logo from '../components/Logo'
+import LogoHeader from '../components/LogoHeader'
 
 function ImageFallback({ name }) {
   return (
@@ -60,8 +60,11 @@ function ProductCard({ product, index }) {
   const [imgError, setImgError] = useState(false)
 
   return (
-    <div
-      className={`flex flex-col rounded-2xl border overflow-hidden transition-all duration-500 animate-fade-in hover:-translate-y-1 ${
+    <a
+      href={product.affiliate_link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`flex flex-col rounded-2xl border overflow-hidden transition-all duration-500 animate-fade-in hover:-translate-y-1 cursor-pointer ${
         product.is_best_pick
           ? 'border-[#2563EB] bg-[#0E1420]'
           : 'border-[#1E2A45] bg-[#0E1420]'
@@ -69,17 +72,16 @@ function ProductCard({ product, index }) {
       style={{
         animationDelay: `${index * 100}ms`,
         boxShadow: product.is_best_pick ? '0 0 30px rgba(37, 99, 235, 0.2)' : undefined,
+        textDecoration: 'none',
       }}
     >
-      {/* Best Pick Badge */}
-      {product.is_best_pick && (
-        <div className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white font-bold py-2 px-4 text-center text-sm">
-          ⭐ Best Pick
-        </div>
-      )}
+      {/* Best Pick Badge — always reserves the same height */}
+      <div className={`py-2 px-4 text-center text-sm font-bold ${product.is_best_pick ? 'bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white' : 'invisible'}`}>
+        ⭐ Best Pick
+      </div>
 
-      {/* Image */}
-      <div className="h-[200px] w-full bg-[#141B2D] flex items-center justify-center overflow-hidden">
+      {/* Image — reduced height */}
+      <div className="h-[160px] w-full bg-[#141B2D] flex items-center justify-center overflow-hidden">
         {product.image_url && !imgError ? (
           <img
             src={product.image_url}
@@ -93,79 +95,67 @@ function ProductCard({ product, index }) {
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-5 flex flex-col">
-        {/* Name */}
-        <h3 className="font-display font-bold text-[#F0F4FF] text-lg mb-2 leading-snug">
-          {product.name}
-        </h3>
+      <div className="flex-1 p-4 flex flex-col gap-3">
 
-        {/* Brand + Category row */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="bg-[#141B2D] text-[#8896B3] text-xs px-2 py-1 rounded-full">
-            {product.brand}
-          </span>
+        {/* Name + Brand inline */}
+        <div>
+          <h3 className="font-bold text-[#F0F4FF] text-base leading-snug" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+            {product.name}
+          </h3>
+          <span className="text-[#8896B3] text-xs">{product.brand}</span>
         </div>
 
-        {/* Price */}
-        <div className="text-[#2563EB] font-bold text-2xl mb-2">
-          {formatIndianPrice(product.price)}
-        </div>
-
-        {/* Rating */}
-        {product.amazon_rating && (
-          <div className="flex items-center gap-1 text-[#8896B3] text-sm mb-4">
-            <span className="text-[#F59E0B]">⭐</span>
-            <span>{product.amazon_rating}</span>
+        {/* Price + Rating + Match Score — single row */}
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-[#2563EB] font-bold text-xl">{formatIndianPrice(product.price)}</div>
+            {product.amazon_rating && (
+              <div className="flex items-center gap-1 text-[#8896B3] text-xs mt-0.5">
+                <span className="text-[#F59E0B]">⭐</span>
+                <span>{product.amazon_rating}</span>
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Match Score */}
-        <div className="flex justify-center mb-4">
           <CircleScore score={product.match_score || 0} />
         </div>
 
         {/* Reasoning */}
         {product.reasoning && (
-          <div className="border-l-2 border-[#2563EB] pl-3 mb-4">
-            <p className="text-[#8896B3] text-xs uppercase tracking-wider mb-1">Why this suits you</p>
-            <p className="text-[#F0F4FF] text-sm leading-relaxed">{product.reasoning}</p>
+          <div className="border-l-2 border-[#2563EB] pl-3">
+            <p className="text-[#8896B3] text-[10px] uppercase tracking-wider mb-0.5">Why this suits you</p>
+            <p className="text-[#F0F4FF] text-xs leading-relaxed">{product.reasoning}</p>
           </div>
         )}
 
         {/* Specs Pills */}
         {product.specs && (
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-1.5">
             {Object.entries(product.specs).map(([key, value]) => (
               <span
                 key={key}
-                className="bg-[#141B2D] text-[#8896B3] rounded-full px-3 py-1 text-xs"
+                className="bg-[#141B2D] rounded-md px-2 py-1 text-[11px] flex items-center gap-1"
               >
-                {value}
+                <span className="text-[#8896B3]">{key === 'os' ? 'OS' : key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}:</span>
+                <span className="text-[#F0F4FF]">{value}</span>
               </span>
             ))}
           </div>
         )}
-
-        {/* Spacer */}
-        <div className="flex-1" />
 
         {/* CTA */}
         <a
           href={product.affiliate_link}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 block w-full text-white font-bold py-3 rounded-lg text-center transition-all duration-300 hover:-translate-y-0.5"
-          style={{
-            background: 'linear-gradient(135deg, #2563EB, #7C3AED)',
-            boxShadow: 'none',
-          }}
+          className="mt-1 block w-full text-white font-bold py-2.5 rounded-lg text-center text-sm transition-all duration-300 hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', boxShadow: 'none' }}
           onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 20px rgba(37,99,235,0.5)' }}
           onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none' }}
         >
           View on Amazon →
         </a>
       </div>
-    </div>
+    </a>
   )
 }
 
@@ -174,31 +164,30 @@ export default function Results({ recommendations, category, answers }) {
 
   if (!recommendations || recommendations.length === 0) {
     return (
-      <div className="min-h-screen bg-[#080C14] flex items-center justify-center px-6">
-        <div className="text-center">
-          <p className="text-2xl text-[#F0F4FF] mb-6">No recommendations found</p>
-          <button
-            onClick={() => navigate('/')}
-            className="text-white font-bold py-3 px-8 rounded-lg"
-            style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)' }}
-          >
-            Back to Home
-          </button>
+      <div className="min-h-screen bg-[#080C14] flex flex-col">
+        <LogoHeader />
+        <div className="flex-1 flex items-center justify-center px-6">
+          <div className="text-center">
+            <p className="text-2xl text-[#F0F4FF] mb-6">No recommendations found</p>
+            <button
+              onClick={() => navigate('/')}
+              className="text-white font-bold py-3 px-8 rounded-lg"
+              style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)' }}
+            >
+              Try Again →
+            </button>
+          </div>
         </div>
+        <footer className="bg-[#0E1420] border-t border-[#1E2A45] px-6 py-6">
+          <p className="text-xs text-[#8896B3] text-center">© 2026 TrueChoice. All rights reserved.</p>
+        </footer>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-[#080C14] flex flex-col">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-40 h-16 flex items-center px-6 border-b border-[#1E2A45] bg-[#0E1420]">
-        <button onClick={() => navigate('/')} className="hover:opacity-80 transition-opacity">
-          <Logo />
-        </button>
-        <div className="flex-1" />
-        <span className="text-sm text-[#8896B3]">Your Perfect Matches</span>
-      </nav>
+      <LogoHeader />
 
       {/* Main Content */}
       <div className="flex-1 px-4 md:px-6 py-12">
@@ -214,25 +203,19 @@ export default function Results({ recommendations, category, answers }) {
           </div>
 
           {/* Cards Grid — 3 cols desktop, 2 tablet, 1 mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 items-start">
             {recommendations.map((product, index) => (
               <ProductCard key={product.id || index} product={product} index={index} />
             ))}
           </div>
 
           {/* Bottom Actions */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 mb-12">
+          <div className="flex justify-center mt-10 mb-12">
             <button
               onClick={() => navigate('/')}
-              className="px-6 py-3 rounded-lg border border-[#1E2A45] text-[#8896B3] hover:text-[#F0F4FF] hover:border-[#2563EB] transition-all"
+              className="px-8 py-3 rounded-lg border border-[#1E2A45] text-[#8896B3] hover:text-[#F0F4FF] hover:border-[#2563EB] transition-all"
             >
               🔄 Start Over
-            </button>
-            <button
-              onClick={() => navigate('/questionnaire')}
-              className="px-6 py-3 rounded-lg bg-[#141B2D] text-[#F0F4FF] hover:bg-[#1E2A45] transition-all"
-            >
-              ✏️ Refine Search
             </button>
           </div>
 
@@ -242,6 +225,13 @@ export default function Results({ recommendations, category, answers }) {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-[#0E1420] border-t border-[#1E2A45] px-6 py-6 mt-auto">
+        <p className="text-xs text-[#8896B3] text-center">
+          © 2026 TrueChoice. All rights reserved.
+        </p>
+      </footer>
     </div>
   )
 }

@@ -1,9 +1,14 @@
 import { Redis } from '@upstash/redis'
+import { MOCK_PRODUCTS } from '../src/utils/mockProducts.js'
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-})
+const isDev = process.env.VITE_DEV_MODE === 'true'
+
+const redis = isDev
+  ? null
+  : new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    })
 
 // Generate cache key
 function generateCacheKey(category, answers) {
@@ -74,21 +79,23 @@ export default async function handler(req, res) {
     // Generate cache key
     const cacheKey = generateCacheKey(category, answers)
 
-    // Check Redis cache
-    try {
-      const cached = await redis.get(cacheKey)
-      if (cached) {
-        return res.status(200).json({
-          recommendations: JSON.parse(cached),
-          from_cache: true,
-        })
+    // Check Redis cache (skipped in dev mode)
+    if (!isDev) {
+      try {
+        const cached = await redis.get(cacheKey)
+        if (cached) {
+          return res.status(200).json({
+            recommendations: JSON.parse(cached),
+            from_cache: true,
+          })
+        }
+      } catch (error) {
+        console.log('Cache check failed, proceeding with Claude API')
       }
-    } catch (error) {
-      console.log('Cache check failed, proceeding with Claude API')
     }
 
-    // TODO: Fetch products from Supabase
-    const products = []
+    // Use mock products in dev mode, otherwise fetch from Supabase
+    const products = isDev ? MOCK_PRODUCTS : []
 
     if (products.length === 0) {
       return res.status(200).json({
@@ -157,11 +164,13 @@ Only pick from the provided product list.`
       }
     })
 
-    // Cache result
-    try {
-      await redis.set(cacheKey, JSON.stringify(enriched), { ex: 604800 })
-    } catch (error) {
-      console.log('Cache write failed, but returning results')
+    // Cache result (skipped in dev mode)
+    if (!isDev) {
+      try {
+        await redis.set(cacheKey, JSON.stringify(enriched), { ex: 604800 })
+      } catch (error) {
+        console.log('Cache write failed, but returning results')
+      }
     }
 
     return res.status(200).json({

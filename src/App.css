@@ -1,0 +1,5 @@
+/* Global App styles */
+body {
+  background: linear-gradient(135deg, #0A0F1E 0%, #1a2844 100%);
+  min-height: 100vh;
+}

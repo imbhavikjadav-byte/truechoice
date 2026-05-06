@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function LogoHeader({ showBadge = false, extra = null }) {
   const navigate = useNavigate()
+
   return (
     <div className="sticky top-0 z-40 flex flex-col items-center">
       <div className="pt-6 pb-5 flex flex-col items-center gap-2 w-full bg-[#0E1420]">
@@ -14,11 +15,7 @@ export default function LogoHeader({ showBadge = false, extra = null }) {
         </p>
         {extra && <div className="mt-1">{extra}</div>}
       </div>
-      {/* Gradient separator line */}
-      <div
-        className="w-full h-px"
-        style={{ background: 'linear-gradient(90deg, transparent, #2563EB 20%, #7C3AED 80%, transparent)' }}
-      />
+      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, #2563EB 20%, #7C3AED 80%, transparent)' }} />
     </div>
   )
 }

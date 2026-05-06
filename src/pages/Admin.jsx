@@ -389,7 +389,7 @@ export default function Admin() {
       <div className="flex-1 px-4 md:px-8 py-8">
         <div className="max-w-[1200px] mx-auto">
           {/* Page Header */}
-          <div className="mb-8">
+          <div className="mb-8 text-center md:text-left">
             <h1 className="text-3xl font-display font-bold text-[#F0F4FF] mb-1">Product Manager</h1>
             <p className="text-[#8896B3]">Manage your product catalogue across all categories</p>
           </div>

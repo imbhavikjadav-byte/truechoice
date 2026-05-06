@@ -64,9 +64,8 @@ export default function Loading({ category, answers, onResultsReady }) {
         }, import.meta.env.VITE_DEV_MODE === 'true' ? 0 : 800)
       } catch (error) {
         console.error('Error fetching recommendations:', error)
-        setTimeout(() => {
-          navigate('/')
-        }, 3000)
+        onResultsReady([])
+        navigate('/your-top-picks')
       }
     }
 

@@ -152,8 +152,8 @@ export default function Home({ onCategorySelect }) {
           {/* Desktop: cards + badges in same column. Mobile: just cards in a row, badges below all together */}
           <div className="hidden md:grid md:grid-cols-3 gap-6">
             {[
-              { icon: '🎯', step: 'Step 1', desc: 'Pick a category & answer questions', badge: '✓ Powered by Claude AI' },
-              { icon: '🤖', step: 'Step 2', desc: 'AI analyses & matches your needs', badge: '✓ 100% Free — No signup needed' },
+              { icon: '🎯', step: 'Step 1', desc: 'Pick a category & answer questions', badge: '✓ 100% Free — No signup needed' },
+              { icon: '🤖', step: 'Step 2', desc: 'AI analyses & matches your needs', badge: '✓ Powered by Claude AI' },
               { icon: '✨', step: 'Step 3', desc: 'Get your top 3 personalised picks', badge: '✓ Amazon Verified Products' },
             ].map(({ icon, step, desc, badge }) => (
               <div key={step} className="flex flex-col items-center gap-4">

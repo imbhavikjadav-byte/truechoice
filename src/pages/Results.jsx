@@ -192,7 +192,7 @@ export default function Results({ recommendations, category, answers }) {
               onClick={() => navigate('/')}
               className="text-[#8896B3] hover:text-[#F0F4FF] text-sm transition-colors"
             >
-              ← Back to Home
+              ← Pick a Different Category
             </button>
           </div>
         </div>

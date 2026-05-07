@@ -202,7 +202,7 @@ export default function Results({ recommendations, category, answers }) {
             </button>
             <button
               onClick={() => navigate('/')}
-              className="text-[#8896B3] hover:text-[#F0F4FF] text-sm transition-colors"
+              className="px-6 py-3 rounded-lg border-2 border-accent-blue/30 text-light-bg/70 hover:border-accent-blue/60 hover:text-light-bg transition-all text-sm whitespace-nowrap"
             >
               ← Pick a Different Category
             </button>

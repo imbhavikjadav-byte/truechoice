@@ -5,6 +5,21 @@ import Logo from '../components/Logo'
 import LogoHeader from '../components/LogoHeader'
 import { useToast, ToastContainer } from '../components/ToastNotification'
 
+const COOKIE_NAME = 'tc_admin_auth'
+const COOKIE_TTL = 60 * 60 * 24 // 24 hours in seconds
+
+function setAuthCookie() {
+  document.cookie = `${COOKIE_NAME}=1; max-age=${COOKIE_TTL}; path=/; SameSite=Strict`
+}
+
+function clearAuthCookie() {
+  document.cookie = `${COOKIE_NAME}=; max-age=0; path=/; SameSite=Strict`
+}
+
+function hasAuthCookie() {
+  return document.cookie.split(';').some(c => c.trim().startsWith(`${COOKIE_NAME}=1`))
+}
+
 const SPEC_FIELDS = {
   laptop: [
     { key: 'processor', label: 'Processor', required: true, placeholder: 'e.g. Intel Core i5 13th Gen' },
@@ -218,7 +233,7 @@ function ProductCardAdmin({ product, onEdit, onDelete, onToggleActive }) {
 export default function Admin() {
   const navigate = useNavigate()
   const { toasts, showToast } = useToast()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(() => hasAuthCookie())
   const [password, setPassword] = useState('')
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
@@ -242,6 +257,7 @@ export default function Admin() {
   const handleLogin = (e) => {
     e.preventDefault()
     if (password === adminPassword) {
+      setAuthCookie()
       setIsLoggedIn(true)
       fetchProducts(adminPassword)
     } else {
@@ -462,16 +478,17 @@ export default function Admin() {
     >
       <ToastContainer toasts={toasts} />
 
-      {/* Centered logo header with logout */}
-      <div className="relative">
-        <LogoHeader showBadge />
-        <button
-          onClick={() => { setIsLoggedIn(false); navigate('/') }}
-          className="absolute right-6 top-1/2 -translate-y-1/2 text-[#8896B3] hover:text-[#EF4444] text-sm font-semibold border border-[#1E2A45] hover:border-[#EF4444] px-4 py-2 rounded-lg transition-all"
-        >
-          Logout
-        </button>
-      </div>
+      <LogoHeader
+        showBadge
+        rightSlot={
+          <button
+            onClick={() => { clearAuthCookie(); setIsLoggedIn(false); navigate('/') }}
+            className="text-[#8896B3] hover:text-[#EF4444] text-sm font-semibold border border-[#1E2A45] hover:border-[#EF4444] px-4 py-2 rounded-lg transition-all whitespace-nowrap"
+          >
+            🔒 Lock
+          </button>
+        }
+      />
 
       {/* Main Content */}
       <div className="flex-1 px-4 md:px-8 py-8">

@@ -272,28 +272,27 @@ export default function Questionnaire({ category, onAnswersSubmit }) {
             </div>
           </div>
 
+          {/* Hint text */}
+          {!answers[currentQuestion.id] && (
+            <p className="text-center text-[#8896B3]/60 text-xs mt-6 mb-2">
+              Select an option above to continue
+            </p>
+          )}
+
           {/* Navigation */}
-          <div className="flex gap-4 justify-center items-start mt-12">
+          <div className="flex justify-between items-center mt-6">
             <button
               onClick={handleBack}
-              className="px-6 py-3 rounded-lg border-2 border-accent-blue/30 text-light-bg/70 hover:border-accent-blue/60 hover:text-light-bg transition-all"
+              className="px-6 py-3 rounded-lg border-2 border-accent-blue/30 text-light-bg/70 hover:border-accent-blue/60 hover:text-light-bg transition-all text-sm whitespace-nowrap"
             >
               ← Back
             </button>
-            <div className="flex flex-col items-end gap-2">
-              <button
-                disabled={!answers[currentQuestion.id]}
-                className="px-6 py-3 rounded-lg bg-accent-blue/20 border-2 border-accent-blue/30 text-light-bg/70 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-              >
-                (Select an option to continue)
-              </button>
-              <button
-                onClick={() => navigate('/')}
-                className="text-[#8896B3] hover:text-[#F0F4FF] text-sm transition-colors"
-              >
-                ← Pick a Different Category
-              </button>
-            </div>
+            <button
+              onClick={() => navigate('/')}
+              className="text-[#8896B3] hover:text-[#F0F4FF] text-sm transition-colors whitespace-nowrap"
+            >
+              ← Pick a Different Category
+            </button>
           </div>
         </div>
       </div>

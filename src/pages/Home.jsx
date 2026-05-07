@@ -55,8 +55,6 @@ function TypewriterWord() {
         color: 'white',
         fontStyle: 'italic',
         display: 'inline-block',
-        minWidth: '120px',
-        textAlign: 'left',
         verticalAlign: 'baseline',
       }}
     >
@@ -106,8 +104,8 @@ export default function Home({ onCategorySelect }) {
 
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center text-center px-6 py-12 fade-in">
-        <h1 className="hero-headline text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[#F0F4FF] mb-4 leading-tight">
-          Find Your <TypewriterWord /> Product in{' '}
+        <h1 className="hero-headline text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[#F0F4FF] mb-4 leading-tight w-full text-left md:text-center">
+          Find Your <TypewriterWord /><br className="md:hidden" /> Product in{' '}
           <span style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             60 Seconds
           </span>

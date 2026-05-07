@@ -189,7 +189,7 @@ export default function Results({ recommendations, category, answers }) {
               href={amazonLink.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-gray-900 font-bold py-3 px-8 rounded-lg mb-4 transition-all hover:opacity-90"
+              className="block w-full text-gray-900 font-bold py-3 px-4 rounded-lg mb-4 transition-all hover:opacity-90 whitespace-nowrap text-sm overflow-hidden"
               style={{ background: 'linear-gradient(135deg, #F97316, #EF4444)' }}
             >
               {amazonLink.label}

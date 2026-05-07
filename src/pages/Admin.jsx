@@ -482,7 +482,7 @@ export default function Admin() {
         showBadge
         rightSlot={
           <button
-            onClick={() => { clearAuthCookie(); setIsLoggedIn(false); navigate('/') }}
+            onClick={() => { clearAuthCookie(); setIsLoggedIn(false); navigate('/admin') }}
             className="text-[#8896B3] hover:text-[#EF4444] text-sm font-semibold border border-[#1E2A45] hover:border-[#EF4444] px-4 py-2 rounded-lg transition-all whitespace-nowrap"
           >
             🔒 Lock
